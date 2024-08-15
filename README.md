@@ -1,5 +1,7 @@
 <h1>RotinaZilla - O Seu Gerenciador de Rotinas Pessoal 🦖</h1>
 
+<img src="https://i.ibb.co/VxMV21c/Screenshot-1.png" alt="RotinaZilla Interface"></a>
+
 <em>Projeto em desenvolvimento, criado como parte dos meus estudos em Python e PyQt5.</em>
 <h1>✨ O que é o RotinaZilla?</h1>
 
