@@ -1,38 +1,81 @@
 import sys
-import time
+import os
+from datetime import datetime
 
 from PyQt6 import uic, QtWidgets
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
-from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QMessageBox
+from PyQt6.QtGui import QDesktopServices, QIcon
 from PyQt6.QtCore import QUrl
-
 
 
 app = QtWidgets.QApplication([])
 window = uic.loadUi('interface.ui')
 
-def start_timer():
-    print('sessss')
-    window.label_12.setText("00:00:00")
+# Inicialize as variáveis globais
+running = 0
+task_begin = None
+task_end = None
 
-    start_time = time.time()
+def start_timer(window):
+    
+    global running
+    global task_begin
+    global task_end
 
-    while True:
+    icone_inicial = QIcon("./Resources/play-circle.svg")
+    icone_final = QIcon("./Resources/pause-circle.svg")
 
-        elapsed_time = time.time() - start_time
+    if running == 0:
+        running = 1
+        task_begin = datetime.now()
+        window.pushButton_5.setIcon(icone_final)
+    else:
+        running = 0
+        task_end = datetime.now()
+        window.pushButton_5.setIcon(icone_inicial)
+        update_time(task_begin, task_end, window)
 
-        hours, remainder = divmod(elapsed_time, 3600)
+def cal_duration(start, end):
+    
+    if start is not None and end is not None:
+        duration = end - start
+        return duration.total_seconds() / 3600  # Converte segundos para horas
+    else:
+        return 0
 
-        minutes, seconds = divmod(remainder, 60)
+def update_time(start, end, window):
+    
+    total_duration = cal_duration(start, end)
+    formatted_duration = f"{total_duration:.2f}".replace('.', ',')
+    window.label_2.setText(f"{formatted_duration} hours")
 
-        timer_text = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
+#Save notes from the interface (textEdit)
+def saveNote(note, window):
+    
+    # Obtém a data atual e formata como dia-mês-ano
+    current_date = datetime.now().strftime("%d-%m-%Y")
+    
+    # Cria o nome do arquivo com a data
+    base_filename = f"notes_{current_date}.txt"
 
-        window.label_12.setText(timer_text)
+    # Obtém o caminho da área de trabalho do usuário
+    desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+    
+    # Garante que o nome do arquivo seja único
+    file_path = os.path.join(desktop_path, base_filename)
+    counter = 1
+    while os.path.exists(file_path):
+        # Cria um novo nome com um número de sufixo
+        file_path = os.path.join(desktop_path, f"notes_{current_date}_{counter}.txt")
+        counter += 1
 
-        app.processEvents()  # necessário para atualizar a interface
+    # Salva o conteúdo no arquivo
+    with open(file_path, 'w') as archive:
+        archive.write(note)
+        
+    QMessageBox.warning(window, 'Saved notes', f'Notes successfully saved in: {file_path}')
 
-        time.sleep(0.1)  # atualiza a cada 0.1 segundos
-
+#Open social media buttons
 def open_github():
 
         url = QUrl("https://github.com/gmoreno-dev")
