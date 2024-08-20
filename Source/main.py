@@ -5,13 +5,18 @@ from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtCore import QUrl
 from control_database import get_tasks_from_db, update_task_completion_status
 from datetime import date
-from interface_functions import open_github, open_linkedin, open_instagram, saveNote, start_timer
-import resources
+from interface_functions import open_github, open_linkedin, open_instagram, saveNote, start_timer, alternate_theme
+import Resources
 
 app = QtWidgets.QApplication([])
 window = uic.loadUi('interface.ui')
 
 table_values = get_tasks_from_db()
+
+
+#Update CheckBox if Completed == 1 in task_manager.db
+def tasks_on_main_dashboard():
+    pass
 
 def saveNoteWrapper():
     # Obtém o texto atual do QTextEdit chamado 'textEdit' na janela principal
@@ -32,6 +37,10 @@ def clickedButtons():
 
     #Botoes task time
     window.pushButton_5.clicked.connect(lambda: start_timer(window))
+
+    #Botao setting
+
+    window.pushButton_4.clicked.connect(lambda: alternate_theme(window))
 
 
 #Alterar o texto da checkBox para os nomes na tabela da database task_manager.db
@@ -68,6 +77,7 @@ def setup_signals():
     window.checkBox_6.stateChanged.connect(lambda: update_task_completion_status(table_values[5][0], 1 if window.checkBox_6.isChecked() else 0))
 
 def main():
+
     clickedButtons()
     tasks_on_main_dashboard(table_values)
     setup_signals()

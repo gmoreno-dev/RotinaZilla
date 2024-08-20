@@ -11,11 +11,23 @@ from PyQt6.QtCore import QUrl
 app = QtWidgets.QApplication([])
 window = uic.loadUi('interface.ui')
 
+# Altera o tema do aplicativo
+actual_theme = 0
+def alternate_theme(window):
+    
+    global actual_theme
+    if actual_theme == 0:
+         actual_theme = 1
+         window.setStyleSheet("QMainWindow {background-image: url(./Resources/css2-pattern-by-magicpattern.png)}")
+    elif actual_theme == 1:
+         actual_theme = 0
+         window.setStyleSheet("QMainWindow {background-image: url(./Resources/css-pattern-by-magicpattern.png)}")
+     
+
 # Inicialize as variáveis globais
 running = 0
 task_begin = None
 task_end = None
-
 def start_timer(window):
     
     global running
