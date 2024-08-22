@@ -15,6 +15,12 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS tasks
                  due_date TEXT,
                  completed BOOLEAN DEFAULT 0)''')
 
+def get_completed_tasks():
+    cursor.execute("SELECT completed FROM tasks")
+    completed_tasks = cursor.fetchall()
+    
+    return completed_tasks
+
 def get_tasks_from_db():
     # Executar a consulta para buscar todas as tasks
     cursor.execute("SELECT description FROM tasks")
@@ -27,4 +33,6 @@ def update_task_completion_status(task_description, completed):
     cursor.execute("UPDATE tasks SET completed = ? WHERE description = ?", (completed, task_description))
     
     conn.commit()
+
+get_completed_tasks()
 

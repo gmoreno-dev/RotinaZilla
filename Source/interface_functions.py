@@ -1,5 +1,6 @@
 import sys
 import os
+import sqlite3
 from datetime import datetime
 
 from PyQt6 import uic, QtWidgets
@@ -7,21 +8,206 @@ from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QMe
 from PyQt6.QtGui import QDesktopServices, QIcon
 from PyQt6.QtCore import QUrl
 
-
 app = QtWidgets.QApplication([])
 window = uic.loadUi('interface.ui')
 
 # Altera o tema do aplicativo
 actual_theme = 0
 def alternate_theme(window):
-    
+    inicial_icon = QIcon("./Resources/sun.svg")
+    final_icon = QIcon("./Resources/moon.svg")
+
     global actual_theme
+
+    mDSC1 = '''color: rgb(226, 220, 200);
+    border-color: rgb(167, 209, 41);
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: outset;'''
+    mDSC2 = '''color: rgb(244, 206, 20);
+    border-color: rgb(55, 151, 119);
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: outset;'''
+    frame1 = '''color: rgb(226, 220, 200);
+    background-color: #3E432E;'''
+    frame2 = '''color: rgb(244, 206, 20);
+    background-color: #45474B;'''
+    progressBar = '''QProgressBar::Chunk{
+	background-color: #616F39;
+    }
+    QProgressBar{
+        background-color: rgb(39,39,39);
+    }'''
+    progressBar2 = '''QProgressBar::Chunk{
+	background-color: rgb(55, 151, 119);
+    }
+    QProgressBar{
+        background-color: #45474B;
+    }'''
+    buttons = '''color: rgb(226, 220, 200);
+    border-color: rgb(167, 209, 41);
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: outset;
+    background-color: #3E432E;'''
+    buttons2 = '''color: rgb(244, 206, 20);
+    border-color: rgb(55, 151, 119);
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: outset;
+    background-color: #45474B;'''
+    circular_buttons = 	'''color: #333;
+    border: 2px solid #616F39;
+    border-radius: 20px;
+    border-style: outset;'''
+    circular_buttons2 = '''	color: rgb(244, 206, 20);
+    border: 2px solid rgb(55, 151, 119);
+    border-radius: 20px;
+    border-style: outset;'''
+    calendar_widget = '''#calendarWidget QWidget{
+	alternate-background-color: #3E432E;
+	background-color: rgb(39,39,39);
+    }
+    '''
+    calendar_widget2 = '''#calendarWidget QWidget{
+	alternate-background-color: rgb(55, 151, 119);
+	background-color: #45474B;
+    }
+    '''
+    checkbox = '''
+    QCheckBox::indicator {
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: #A7D129;
+
+    }
+    QCheckBox::indicator:checked {
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: #A7D129;
+        background-color: #616F39;
+        
+        
+        
+        image: url(:/Icons/Resources/check.svg);
+    }
+    QCheckBox{
+    border-width: 0px;
+    }'''
+    checkbox2 = '''
+    QCheckBox::indicator {
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: rgb(55, 151, 119);
+
+    }
+    QCheckBox::indicator:checked {
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: rgb(55, 151, 119);
+        background-color: rgb(244, 206, 20);
+        
+        
+        
+        image: url(:/Icons/Resources/check.svg);
+    }
+    QCheckBox{
+    border-width: 0px;
+    }'''
+
+
+
+
     if actual_theme == 0:
+         window.pushButton_4.setIcon(final_icon)
          actual_theme = 1
          window.setStyleSheet("QMainWindow {background-image: url(./Resources/css2-pattern-by-magicpattern.png)}")
+         window.mainDashboardSubContainer.setStyleSheet(mDSC2)
+         window.rightDashboardSubContainer.setStyleSheet(mDSC2)
+         window.frame.setStyleSheet(mDSC2)
+         
+         window.frame_3.setStyleSheet('''color: rgb(244, 206, 20);
+border-color: rgb(55, 151, 119);
+border-width: 2px;
+border-radius: 10px;
+border-style: outset;''')
+         window.frame_4.setStyleSheet(frame2)
+         window.frame_5.setStyleSheet(frame2)
+         window.frame_6.setStyleSheet(frame2)
+         window.frame_7.setStyleSheet(frame2)
+         window.frame_8.setStyleSheet(frame2)
+         window.frame_9.setStyleSheet(frame2)
+         window.frame_10.setStyleSheet(frame2)
+
+         window.progressBar.setStyleSheet(progressBar2)
+
+         window.pushButton.setStyleSheet(buttons2)
+         window.pushButton_3.setStyleSheet(buttons2)
+         window.pushButton_4.setStyleSheet(buttons2)
+         window.pushButton_5.setStyleSheet(circular_buttons2)
+         window.pushButton_8.setStyleSheet(circular_buttons2)
+
+         window.calendarWidget.setStyleSheet(calendar_widget2)
+
+         window.checkBox.setStyleSheet(checkbox2)
+         window.checkBox_2.setStyleSheet(checkbox2)
+         window.checkBox_3.setStyleSheet(checkbox2)
+         window.checkBox_4.setStyleSheet(checkbox2)
+         window.checkBox_5.setStyleSheet(checkbox2)
+         window.checkBox_6.setStyleSheet(checkbox2)
     elif actual_theme == 1:
+         window.pushButton_4.setIcon(inicial_icon)
          actual_theme = 0
          window.setStyleSheet("QMainWindow {background-image: url(./Resources/css-pattern-by-magicpattern.png)}")
+         window.mainDashboardSubContainer.setStyleSheet(mDSC1)
+         window.rightDashboardSubContainer.setStyleSheet(mDSC1)
+         window.frame.setStyleSheet(mDSC1)
+         
+         window.frame_3.setStyleSheet('''color: rgb(226, 220, 200);
+         border-color: rgb(167, 209, 41);
+         border-width: 2px;
+         border-radius: 10px;
+         border-style: outset;''')
+         window.frame_4.setStyleSheet(frame1)
+         window.frame_5.setStyleSheet(frame1)
+         window.frame_6.setStyleSheet(frame1)
+         window.frame_7.setStyleSheet(frame1)
+         window.frame_8.setStyleSheet(frame1)
+         window.frame_9.setStyleSheet(frame1)
+         window.frame_10.setStyleSheet(frame1)
+
+         window.progressBar.setStyleSheet(progressBar)
+
+         window.pushButton.setStyleSheet(buttons)
+         window.pushButton_2.setStyleSheet(buttons)
+         window.pushButton_3.setStyleSheet(buttons)
+         window.pushButton_4.setStyleSheet(buttons)
+         window.pushButton_5.setStyleSheet(circular_buttons)
+         window.pushButton_8.setStyleSheet(circular_buttons)
+
+         window.calendarWidget.setStyleSheet(calendar_widget)
+
+         window.checkBox.setStyleSheet(checkbox)
+         window.checkBox_2.setStyleSheet(checkbox)
+         window.checkBox_3.setStyleSheet(checkbox)
+         window.checkBox_4.setStyleSheet(checkbox)
+         window.checkBox_5.setStyleSheet(checkbox)
+         window.checkBox_6.setStyleSheet(checkbox)
+
+         
      
 
 # Inicialize as variáveis globais
@@ -61,7 +247,6 @@ def update_time(start, end, window):
     formatted_duration = f"{total_duration:.2f}".replace('.', ',')
     window.label_2.setText(f"{formatted_duration} hours")
 
-#Save notes from the interface (textEdit)
 def saveNote(note, window):
     
     # Obtém a data atual e formata como dia-mês-ano
@@ -87,7 +272,6 @@ def saveNote(note, window):
         
     QMessageBox.warning(window, 'Saved notes', f'Notes successfully saved in: {file_path}')
 
-#Open social media buttons
 def open_github():
 
         url = QUrl("https://github.com/gmoreno-dev")
