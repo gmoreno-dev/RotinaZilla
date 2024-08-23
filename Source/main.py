@@ -118,7 +118,6 @@ def open_edit_task_window():
         update_progress_bar()
     
 
-
 def open_add_task_window():
     # Criar uma instância da janela AddTaskWindow
     add_task_window = AddTaskWindow()

@@ -192,7 +192,6 @@ border-style: outset;''')
          window.progressBar.setStyleSheet(progressBar)
 
          window.pushButton.setStyleSheet(buttons)
-         window.pushButton_2.setStyleSheet(buttons)
          window.pushButton_3.setStyleSheet(buttons)
          window.pushButton_4.setStyleSheet(buttons)
          window.pushButton_5.setStyleSheet(circular_buttons)
